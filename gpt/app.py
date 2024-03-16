@@ -4,7 +4,7 @@ import openai
 import ujson
 import ipdb
 
-openai.api_key = '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'  # 在 OpenAI 网站上申请的 API 密钥
+openai.api_key = ''
 
 app = Flask(__name__)
 app.config['JSONIFY_THRESHOLD'] = 1024*1024

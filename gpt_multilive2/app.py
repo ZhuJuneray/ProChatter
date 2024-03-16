@@ -4,7 +4,7 @@ import openai
 import ujson
 import ipdb
 
-openai.api_key = 'sk-qGEC8CrgdxbcJJURn5oSCKLNjmv3OvBBO04Ste3DtKRy2DA'  # 在 OpenAI 网站上申请的 API 密钥
+openai.api_key = ''  # 在 OpenAI 网站上申请的 API 密钥
 openai.api_base = "https://api.chatanywhere.cn/v1"
 
 app = Flask(__name__)

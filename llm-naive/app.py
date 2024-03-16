@@ -14,7 +14,7 @@ from difflib import ndiff
 
 local_time_start = 0.0
 
-openai.api_key = 'sk-GheB7h42VTcUewSgHAK1wpuDcgiBjleCLSBwg1J4NPn5JdzI'
+openai.api_key = ''
 openai.api_base = 'https://api.chatanywhere.cn/v1'
 # openai.api_key = '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'
 # openai.api_key = 'sk-UecWKOItLpRCnO2IrANlJCNKmNqCb9U3dCZITU7cVND0A1zy'

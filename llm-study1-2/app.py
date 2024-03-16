@@ -21,7 +21,7 @@ session_id='user_cr'
 last_user_input = ""
 global_id = 0
 question_id = -1
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="")
 
 # loading questions
 original_pool, modified_pool = [], []

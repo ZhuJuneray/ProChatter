@@ -12,7 +12,7 @@ import traceback
 from bs4 import BeautifulSoup
 from difflib import ndiff
 
-openai.api_key = 'sk-2esy6xiQbt3jZFMglD5EkBLYBxBXrgrbhVm7jnXfv0x8WfHG' 
+openai.api_key = '' 
 openai.api_base = 'https://api.chatanywhere.cn/v1'
 
 app = Flask(__name__)

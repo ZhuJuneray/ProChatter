@@ -12,10 +12,8 @@ import traceback
 from bs4 import BeautifulSoup
 from difflib import ndiff
 
-# openai.api_key = 'sk-NlOPh7yikkhLvOy7djzoH86hFFCRAwUBFgm9ObXHmn5J49h3'
-# openai.api_key = 'sk-TaEO6PkTXXtJEqbWA3SKonNctJ0nZW6twezd2xxs5cYbxxhA' 
-# openai.api_key = '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'
-openai.api_key = 'sk-GheB7h42VTcUewSgHAK1wpuDcgiBjleCLSBwg1J4NPn5JdzI'
+
+openai.api_key = ''
 openai.api_base = 'https://api.chatanywhere.cn/v1'
 # openai.api_base = 'https://api.chatanywhere.cn/v1'
 
