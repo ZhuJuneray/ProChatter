@@ -1,4 +1,4 @@
-api_key = "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"
+api_key = ""
 import os
 import time
 import openai
