@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>词级别文本修改追踪</title>
+<style>
+  #editableDiv {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 100px;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+<div id="editableDiv" contenteditable="true">
+  编辑我...
+</div>
+<div id="output">
+  <p>词级别文本修改历史：</p>
+  <ul id="changeList"></ul>
+</div>
+
+<script>
+const editableDiv = document.getElementById('editableDiv');
+const changeList = document.getElementById('changeList');
+let previousText = editableDiv.textContent;
+
+editableDiv.addEventListener('input', function() {
+  const currentText = editableDiv.textContent;
+  const changes = findWordLevelChanges(previousText, currentText);
+  displayChanges(changes);
+  
+  previousText = currentText;
+});
+
+function findWordLevelChanges(previous, current) {
+  const previousWords = previous.split(/\s+/);
+  const currentWords = current.split(/\s+/);
+  const changes = [];
+
+  let i = 0;
+  while (i < previousWords.length || i < currentWords.length) {
+    if (previousWords[i] !== currentWords[i]) {
+      if (previousWords[i] === currentWords[i + 1]) {
+        // Word added
+        changes.push(`添加词：${currentWords[i + 1]}`);
+        i++;
+      } else if (previousWords[i + 1] === currentWords[i]) {
+        // Word removed
+        changes.push(`删除词：${previousWords[i + 1]}`);
+        i++;
+      } else {
+        // Word modified
+        changes.push(`修改词：从 '${previousWords[i]}' 到 '${currentWords[i]}'`);
+      }
+    }
+    i++;
+  }
+
+  return changes;
+}
+
+function displayChanges(changes) {
+  changeList.innerHTML = '';
+  changes.forEach((change, index) => {
+    const li = document.createElement('li');
+    li.textContent = `${index + 1}. ${change}`;
+    changeList.appendChild(li);
+  });
+}
+</script>
+</body>
+</html>

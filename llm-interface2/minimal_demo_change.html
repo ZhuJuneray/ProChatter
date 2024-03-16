@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文本修改追踪</title>
+<style>
+  #editableDiv {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 100px;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+<div id="editableDiv" contenteditable="true">
+  编辑我...
+</div>
+<div id="output">
+  <p>文本修改历史：</p>
+  <ul id="changeList"></ul>
+</div>
+
+<script>
+const editableDiv = document.getElementById('editableDiv');
+const changeList = document.getElementById('changeList');
+let history = [];
+
+editableDiv.addEventListener('input', function() {
+  const oldValue = this.getAttribute('data-old-value') || '';
+  const newValue = this.textContent;
+  
+  if (oldValue !== newValue) {
+    const change = {
+      type: 'edit',
+      oldValue: oldValue,
+      newValue: newValue,
+      timestamp: new Date()
+    };
+    history.push(change);
+    this.setAttribute('data-old-value', newValue);
+    displayChanges();
+  }
+});
+
+function displayChanges() {
+  changeList.innerHTML = '';
+  history.forEach((change, index) => {
+    const li = document.createElement('li');
+    li.textContent = `${index + 1}. 修改时间：${change.timestamp}, 旧值："${change.oldValue}", 新值："${change.newValue}"`;
+    changeList.appendChild(li);
+  });
+}
+</script>
+</body>
+</html>

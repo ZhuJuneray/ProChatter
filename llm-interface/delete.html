@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracking Deleted Content</title>
+<style>
+  #editableDiv {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 100px;
+    outline: none;
+  }
+</style>
+</head>
+<body>
+<div id="editableDiv" contenteditable="true"></div>
+<div id="deletedContent"></div>
+<script>
+  const editableDiv = document.getElementById('editableDiv');
+  const deletedContentDiv = document.getElementById('deletedContent');
+  let previousContent = editableDiv.innerHTML;
+
+  editableDiv.addEventListener('input', () => {
+    const currentContent = editableDiv.innerHTML;
+    const deletedContent = findDeletedContent(previousContent, currentContent);
+    
+    if (deletedContent.length > 0) {
+      deletedContentDiv.innerHTML = `Deleted content: ${deletedContent}`;
+    } else {
+      deletedContentDiv.innerHTML = '';
+    }
+
+    previousContent = currentContent;
+  });
+
+  function findDeletedContent(previousContent, currentContent) {
+    const deletedContent = [];
+    const previousTokens = previousContent.split(' ');
+    const currentTokens = currentContent.split(' ');
+
+    for (const token of previousTokens) {
+      if (!currentTokens.includes(token)) {
+        deletedContent.push(token);
+      }
+    }
+
+    return deletedContent.join(' ');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .highlight {
+    background-color: yellow;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div id="text-box" contenteditable="true">
+  <!-- 之前已存在的文本 -->
+  Hello, this is some existing text. 
+</div>
+
+<script>
+// 监听点击事件，实现闪烁效果
+function startBlinking(element) {
+  let isBlinking = false;
+  const blinkInterval = setInterval(() => {
+    isBlinking = !isBlinking;
+    element.style.visibility = isBlinking ? 'hidden' : 'visible';
+  }, 500); // 闪烁间隔为0.5秒
+
+  // 停止闪烁
+  setTimeout(() => {
+    clearInterval(blinkInterval);
+    element.style.visibility = 'visible';
+  }, 5000); // 闪烁持续5秒
+}
+
+// 添加点击事件处理程序
+document.getElementById("text-box").addEventListener("click", function(event) {
+  const clickedElement = event.target;
+  
+  // 检查是否点击的是高亮文字
+  if (clickedElement.classList.contains("highlight")) {
+    // 遍历其他非高亮文字并开始闪烁效果
+    const textBox = document.getElementById("text-box");
+    const allTextNodes = textBox.childNodes;
+    for (const node of allTextNodes) {
+      if (!node.classList || !node.classList.contains("highlight")) {
+        startBlinking(node);
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

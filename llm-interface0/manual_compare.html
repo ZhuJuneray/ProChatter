@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文本变化位置追踪</title>
+<style>
+  .editableDiv {
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 100px;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+<div id="beforeDiv" class="editableDiv" contenteditable="true">
+  编辑之前...
+</div>
+<div id="afterDiv" class="editableDiv" contenteditable="true">
+  编辑之后...
+</div>
+<div id="output">
+  <p>文本变化位置：</p>
+  <ul id="changeList"></ul>
+</div>
+
+<script>
+const beforeDiv = document.getElementById('beforeDiv');
+const afterDiv = document.getElementById('afterDiv');
+const changeList = document.getElementById('changeList');
+
+afterDiv.addEventListener('input', function() {
+  const beforeText = beforeDiv.textContent;
+  const afterText = afterDiv.textContent;
+  console.log(beforeText, afterText);
+  const changes = findTextChanges(beforeText, afterText);
+  displayChanges(changes);
+});
+
+function findTextChanges(before, after) {
+  const changes = [];
+  const diff = getDiff(before, after);
+
+  let index = 0;
+  for (const operation of diff) {
+    if (operation[0] === '+') {
+      changes.push({ type: 'add', index: index, text: operation.slice(1) });
+    } else if (operation[0] === '-') {
+      changes.push({ type: 'delete', index: index, length: operation.slice(1).length });
+      index += operation.slice(1).length;
+    } else {
+      index += operation.length;
+    }
+  }
+
+  return changes;
+}
+
+function getDiff(a, b) {
+  const m = a.length;
+  const n = b.length;
+  const dp = new Array(m + 1).fill(null).map(() => new Array(n + 1).fill(0));
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1;
+      }
+    }
+  }
+
+  const diff = [];
+  let i = m, j = n;
+  while (i > 0 || j > 0) {
+    if (i > 0 && dp[i][j] === dp[i - 1][j] + 1) {
+      diff.unshift('-' + a[i - 1]);
+      i--;
+    } else if (j > 0 && dp[i][j] === dp[i][j - 1] + 1) {
+      diff.unshift('+' + b[j - 1]);
+      j--;
+    } else {
+      diff.unshift(a[i - 1]);
+      i--;
+      j--;
+    }
+  }
+
+  return diff;
+}
+
+function displayChanges(changes) {
+  changeList.innerHTML = '';
+  changes.forEach((change, index) => {
+    const li = document.createElement('li');
+    if (change.type === 'add') {
+      li.textContent = `${index + 1}. 增加：在位置 ${change.index} 插入 "${change.text}"`;
+    } else if (change.type === 'delete') {
+      li.textContent = `${index + 1}. 删除：从位置 ${change.index} 删除 ${change.length} 个字符`;
+    }
+    changeList.appendChild(li);
+  });
+}
+</script>
+</body>
+</html>
